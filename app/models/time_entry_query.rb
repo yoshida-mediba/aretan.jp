@@ -22,7 +22,7 @@ class TimeEntryQuery < Query
   self.available_columns = [
     QueryColumn.new(:project, :sortable => "#{Project.table_name}.name", :groupable => true),
     QueryColumn.new(:spent_on, :sortable => ["#{TimeEntry.table_name}.spent_on", "#{TimeEntry.table_name}.created_on"], :default_order => 'desc', :groupable => true),
-    QueryColumn.new(:tweek, :sortable => ["#{TimeEntry.table_name}.spent_on", "#{TimeEntry.table_name}.created_on"], :caption => l(:label_week)),
+    QueryColumn.new(:tweek, :sortable => ["#{TimeEntry.table_name}.spent_on", "#{TimeEntry.table_name}.created_on"], :caption => :label_week),
     QueryColumn.new(:user, :sortable => lambda {User.fields_for_order_statement}, :groupable => true),
     QueryColumn.new(:activity, :sortable => "#{TimeEntryActivity.table_name}.position", :groupable => true),
     QueryColumn.new(:issue, :sortable => "#{Issue.table_name}.id"),
@@ -139,13 +139,5 @@ class TimeEntryQuery < Query
       add_filter('spent_on', '<=', [params[:to]])
     end
     self
-  end
-
-  def issue_custom_fields
-    if project
-      project.all_issue_custom_fields
-    else
-      IssueCustomField.where(:is_for_all => true)
-    end
   end
 end

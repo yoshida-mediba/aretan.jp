@@ -72,7 +72,7 @@ class Issue < ActiveRecord::Base
   validates :estimated_hours, :numericality => {:greater_than_or_equal_to => 0, :allow_nil => true, :message => :invalid}
   validates :start_date, :date => true
   validates :due_date, :date => true
-  validate :validate_issue, :validate_required_fields
+  validate :validate_issue, :validate_required_fields, :validate_permissions
   attr_protected :id
 
   scope :visible, lambda {|*args|
@@ -103,8 +103,8 @@ class Issue < ActiveRecord::Base
     ids.any? ? where(:assigned_to_id => ids) : none
   }
 
+  before_validation :default_assign, on: :create
   before_validation :clear_disabled_fields
-  before_create :default_assign
   before_save :close_duplicates, :update_done_ratio_from_issue_status,
               :force_updated_on_change, :update_closed_on, :set_assigned_to_was
   after_save {|issue| issue.send :after_project_change if !issue.id_changed? && issue.project_id_changed?}
@@ -424,7 +424,7 @@ class Issue < ActiveRecord::Base
   end
 
   def estimated_hours=(h)
-    write_attribute :estimated_hours, (h.is_a?(String) ? h.to_hours : h)
+    write_attribute :estimated_hours, (h.is_a?(String) ? (h.to_hours || h) : h)
   end
 
   safe_attributes 'project_id',
@@ -490,6 +490,7 @@ class Issue < ActiveRecord::Base
   # attr_accessible is too rough because we still want things like
   # Issue.new(:project => foo) to work
   def safe_attributes=(attrs, user=User.current)
+    @attributes_set_by = user
     return unless attrs.is_a?(Hash)
 
     attrs = attrs.deep_dup
@@ -741,6 +742,14 @@ class Issue < ActiveRecord::Base
           next if attribute == 'fixed_version_id' && assignable_versions.blank?
           errors.add attribute, :blank
         end
+      end
+    end
+  end
+
+  def validate_permissions
+    if @attributes_set_by && new_record? && copy?
+      unless allowed_target_trackers(@attributes_set_by).include?(tracker)
+        errors.add :tracker, :invalid
       end
     end
   end
@@ -1003,7 +1012,7 @@ class Issue < ActiveRecord::Base
 
   # Returns the number of hours spent on this issue
   def spent_hours
-    @spent_hours ||= time_entries.sum(:hours) || 0
+    @spent_hours ||= time_entries.sum(:hours) || 0.0
   end
 
   # Returns the total number of hours spent on this issue and its descendants
@@ -1042,7 +1051,7 @@ class Issue < ActiveRecord::Base
     if issues.any?
       hours_by_issue_id = TimeEntry.visible(user).where(:issue_id => issues.map(&:id)).group(:issue_id).sum(:hours)
       issues.each do |issue|
-        issue.instance_variable_set "@spent_hours", (hours_by_issue_id[issue.id] || 0)
+        issue.instance_variable_set "@spent_hours", (hours_by_issue_id[issue.id] || 0.0)
       end
     end
   end
@@ -1055,7 +1064,7 @@ class Issue < ActiveRecord::Base
           " AND parent.lft <= #{Issue.table_name}.lft AND parent.rgt >= #{Issue.table_name}.rgt").
         where("parent.id IN (?)", issues.map(&:id)).group("parent.id").sum(:hours)
       issues.each do |issue|
-        issue.instance_variable_set "@total_spent_hours", (hours_by_issue_id[issue.id] || 0)
+        issue.instance_variable_set "@total_spent_hours", (hours_by_issue_id[issue.id] || 0.0)
       end
     end
   end
