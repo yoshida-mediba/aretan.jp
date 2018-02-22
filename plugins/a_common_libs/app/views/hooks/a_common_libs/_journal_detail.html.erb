@@ -1,0 +1,6 @@
+<script type="text/javascript" charset="utf-8">
+    var comments = $('.journal.has-notes');
+    $.each(comments, function(i, val){
+        $(val).find('.contextual').appendTo($(val).find('h4'));
+    });
+</script>

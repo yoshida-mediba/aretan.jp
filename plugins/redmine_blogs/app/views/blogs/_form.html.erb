@@ -1,0 +1,8 @@
+<%= error_messages_for 'blog' %>
+<div>
+  <p><%= f.text_field :title, :required => true, :size => 60 %></p>
+  <p><%= f.text_area :description, :required => true, :cols => 60, :rows => 15, :class => 'wiki-edit' %></p>
+  <p><label><%=l(:label_attachment_plural)%></label><%= render :partial => 'attachments/form' %></p>
+</div>
+
+<%= wikitoolbar_for 'blog_description' %>

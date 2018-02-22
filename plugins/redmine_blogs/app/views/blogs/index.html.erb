@@ -1,0 +1,31 @@
+<% if User.current.allowed_to?(:manage_blogs, @project, :global => true) %>
+<div class="contextual">
+<%= link_to l(:label_post_new),
+            { :controller => 'blogs',
+              :action => 'new',
+              :project_id => @project },
+            :class => 'icon icon-add',
+            :onclick => '$("#add-blog").show(); return false;' %>
+</div>
+
+<div id="add-blog" style="display:none;">
+  <%= render :partial => 'post', :locals => {:inline => true} %>
+</div>
+<% else %>
+<div class="contextual"></div>
+<% end %>
+
+<h2>Report</h2>
+
+<div>
+<%= render :partial => 'list', :locals => {:blogs => @blogs} %>
+<span class="pagination"><%= pagination_links_full @blogs_pages %></span>
+
+<% other_formats_links do |f| %>
+  <%= f.link_to 'Atom', :url => { :action => 'index', :project_id => @project, :key => User.current.rss_key } %>
+  <%= f.link_to 'RSS', :url => { :action => 'index', :project_id => @project, :key => User.current.rss_key } %>
+<% end if @project %>
+
+</div>
+
+<% html_title(@user ? @user : @tag ? @tag : l(:label_blog_plural)) -%>

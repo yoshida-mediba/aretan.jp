@@ -1,0 +1,289 @@
+#!/bin/sh
+
+# Copyright (C) 2015 Antonio Terceiro
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+set -eu
+
+REDMINE_INSTANCES_OWNERSHIP=$(stat -c %U:%G $(dirname $0/..))
+REDMINE_INSTANCES_FOLLOW_FHS=""
+REDMINE_INSTANCES_ROOT="$(readlink -f $(dirname $0)/..)/instances"
+
+if [ -r /etc/default/redmine ]; then
+  . /etc/default/redmine
+fi
+
+usage() {
+  local rc="${1:-0}"
+  local program="$(basename $0)"
+  echo "usage: $program list"
+  echo "usage: $program create INSTANCE"
+  echo "usage: $program remove INSTANCE"
+  echo "usage: $program help"
+  exit $rc
+}
+
+# map directories support for placing the files in the correct locations
+# according to the FHS (http://www.pathname.com/fhs/). Required for official
+# Debian packages.
+fhs_directory_mapping() {
+  if [ -n "$REDMINE_INSTANCES_FOLLOW_FHS" ]; then
+    local instance="$1"
+    local dir="$2"
+    case "$dir" in
+      config)
+        echo "/etc/redmine/$instance"
+        ;;
+      log)
+        echo "/var/log/redmine/$instance"
+        ;;
+      files)
+        echo "/var/lib/redmine/$instance/files"
+        ;;
+      public/plugin_assets)
+        echo "/var/cache/redmine/$instance/plugin_assets"
+        ;;
+      tmp)
+        echo "/var/cache/redmine/$instance/tmp"
+        ;;
+    esac
+  fi
+}
+
+make_instance_directory() {
+  local instance="$1"
+  local dirname="$2"
+  local target="$REDMINE_INSTANCES_ROOT/$instance/$dirname"
+  local dir=$(fhs_directory_mapping "$instance" "$dirname")
+  if [ -z "$dir" ]; then
+    dir="$target"
+  fi
+
+  mkdir -p "$dir"
+  chown -R "$REDMINE_INSTANCES_OWNERSHIP" "$dir"
+
+  if [ "$dir" != $target ]; then
+    mkdir -p $(dirname "$target")
+    ln -sfT "$dir" "$target"
+  fi
+}
+
+call_pager() {
+  if [ -t 1 ]; then
+    man -l -
+  else
+    cat
+  fi
+}
+
+if [ $# -lt 1 ]; then
+  usage 1
+fi
+cmd="$1"
+shift
+
+case "$cmd" in
+  list)
+    if [ -d "$REDMINE_INSTANCES_ROOT" ]; then
+      ls -1 "$REDMINE_INSTANCES_ROOT"
+    fi
+    ;;
+
+  create)
+    instance="${1:-}"
+    [ -n "$instance" ] || usage 1
+
+    make_instance_directory "$instance" config
+    make_instance_directory "$instance" log
+    make_instance_directory "$instance" files
+    make_instance_directory "$instance" public/plugin_assets
+    make_instance_directory "$instance" tmp
+    ;;
+
+  remove)
+    instance="${1:-}"
+    [ -n "$instance" ] || usage 1
+
+    printf "Are you sure you want to remove instance $instance? There is no going back [y/N] "
+    read confirm
+    if [ "$confirm" = 'y' -o "$confirm" = 'Y' ]; then
+      rm -rf "$REDMINE_INSTANCES_ROOT/$instance"
+    else
+      echo "Aborted."
+    fi
+    ;;
+
+  help)
+    sed -e '1,/<<DOCUMENTATION$/d; /^DOCUMENTATION/d' "$0" \
+      | pod2man --name='redmine-instances' --center "" --release "" - \
+      | call_pager
+    ;;
+
+  *)
+    if [ -n "$cmd" ]; then
+      echo "E: invalid command: $cmd"
+    fi
+    usage 1
+    ;;
+esac
+
+exit
+: <<DOCUMENTATION
+=encoding UTF-8
+
+=head1 redmine-instances
+
+redmine-instances - manage multiple instances in a single Redmine install
+
+=head1 SYNOPSIS
+
+B<redmine-instances> I<COMMAND> [I<INSTANCE>]
+
+See "I<THE REDMINE MULTITENANCY SYSTEM>" below for a description of how it all
+works.
+
+=head1 COMMANDS
+
+=head2 list
+
+Lists the existing instances.
+
+=head2 create INSTANCE
+
+Creates an instance. This command is idempotent, so calling it multiple times
+is not a problem. Not only that, but existing instances will also be repaired
+and gain the expected directory structure.
+
+=head2 remove INSTANCE
+
+Removes an instance. After this command finished, all files in the instance
+directory will be removed. Any MySQL/PostgreSQL databases will I<not> be
+removed, and must be removed manually.
+
+=head2 help
+
+Displays this documentation.
+
+=head1 THE REDMINE MULTITENANCY SYSTEM
+
+The Redmine multitenancy system is implemented in such a way that it is
+unobstrusive: if you don't do anything to configure multiple instances, Redmine
+will just work as it normally does.
+
+To run redmine against a specific instance, you must set the
+I<REDMINE_INSTANCE> environment variable for Redmine processes. Since such
+environment variable is queried at compile times in some parts of the Redmine
+codebase, this means that multiple Redmine instances must be handled as
+I<separate processes>.
+
+When Redmine is started with the I<REDMINE_INSTANCE> environment variable set
+to an instance name, then a few parameters will be adjusted:
+
+I<Logs> will be stored in /path/to/redmine/instances/I<$REDMINE_INSTANCE>/log/
+
+I<Database configuration> will be read from
+/path/to/redmine/instances/I<$REDMINE_INSTANCE>/config/database.yml
+
+I<Temporary files>, such as caches, will be stored in
+/path/to/redmine/instances/I<$REDMINE_INSTANCE>/tmp/
+
+I<File attachments> will be stored in
+/path/to/redmine/instances/I<$REDMINE_INSTANCE>/files/
+
+I<Plugin assets> will be stored in
+/path/to/redmine/instances/I<$REDMINE_INSTANCE>/public/plugin_assets/
+
+=head1 NOTES FOR DEBIAN GNU/LINUX
+
+When using the official redmine Debian package, the directories mentioned above
+will actually be symbolic links to the expected locations according to FHS,
+namely:
+
+I<config> will be a link to /etc/redmine/I<$REDMINE_INSTANCE>/
+
+I<log> will be a link /var/log/redmine/I<$REDMINE_INSTANCE>/
+
+I<tmp> will be a link /var/cache/redmine/I<$REDMINE_INSTANCE>/
+
+I<files> will be stored directly in /var/lib/redmine/I<$REDMINE_INSTANCE>/files/
+
+I<plugin assets> will be stored directly in /var/lib/redmine/I<$REDMINE_INSTANCE>/plugin_assets/
+
+Users of the Debian package can also find B<redmine-instances> in I<$PATH>,
+and can call it directly (as root) from any directory.
+
+=head1 EXAMPLE: CREATING AND USING A NEW INSTANCE
+
+=head2 Creating the directory structure
+
+  $ cd /path/to/redmine
+  $ ./bin/redmine-instances create myinstance
+  $ edit instances/myinstance/config/database.yml
+  [...]
+  $ export REDMINE_INSTANCE=myinstance
+  $ bundle exec rake db:migrate
+  $ bundle exec rake redmine:load_default_data
+  $ bundle exec rake generate_secret_token
+
+=head2 Web server configuration
+
+For Passenger with Apache, you will want something like the example below. Note
+the I<PassengerAppGroupName>: it must be set to a different value for each of
+your Redmine instances, and PassengerAppGroupName will make sure that all your
+instances are isolated from each other.
+
+  <VirtualHost *:80>
+    ServerName my.domain.name
+    RailsEnv production
+    SetEnv REDMINE_INSTANCE "myinstance"
+    PassengerAppGroupName redmine_myinstance
+    PassengerDefaultUser www-data
+    DocumentRoot /path/to/redmine/public
+    <Directory "/path/to/redmine/public">
+      Allow from all
+      Options -MultiViews
+      Require all granted
+    </Directory>
+  </VirtualHost>
+
+=head1 SEE ALSO
+
+Filesystem Hierarchy Standard (FHS), I<http://www.pathname.com/fhs/>.
+
+=head1 COPYRIGHT AND AUTHORS
+
+B<redmine-instances> is Copyright (C) 2015, Antonio Terceiro.
+
+The Multi-Tenancy support for Redmine was originally developed for Debian
+GNU/Linux, and is Copyright (C) 2014-2015 Antonio Terceiro, 2011-2014 Jérémy
+Lal, 2011-2014 Ondrej Surý.
+
+B<Redmine> is Copyright (C) 2006-2015, Jean-Philippe Lang.
+
+This program is free software; you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free Software
+Foundation; either version 2 of the License, or (at your option) any later
+version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with
+this program; if not, write to the Free Software Foundation, Inc., 51 Franklin
+Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+DOCUMENTATION

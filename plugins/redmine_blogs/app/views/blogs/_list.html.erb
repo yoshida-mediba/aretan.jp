@@ -1,0 +1,19 @@
+<% if blogs.empty? %>
+<p class="nodata"><%= l(:label_no_data) %></p>
+<% else %>
+
+<div id="blogs">
+  <% blogs.each do |blog| %>
+  <%= div_for(blog) do %>
+  <div class="box">
+    <h3><%= link_to blog.title, :controller => 'blogs', :action => 'show', :id => blog %></h3>
+    <div class="wiki">
+    <%= textilizable(blog, :short_description) %>
+    <%= link_to(l(:label_read_more), { :action => :show, :id => blog.id }) if blog.has_more? %>
+    </div>
+    <p class="author"><%= authoring blog.created_on, blog.author %></p>
+  </div>
+  <% end %>
+<% end %>
+</div>
+<% end %>
