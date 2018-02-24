@@ -839,6 +839,9 @@
       text-align: center;
       padding-bottom: 7px;
       padding-right: 14px;
+      opacity: 0.6;
+      color: black;
+      border-color: black;
   }
 
   #content #spmenu a img {
@@ -847,7 +850,17 @@
       height: 16px;
       vertical-align: middle;
       margin: 0 5px 2px 5px;
-      opacity: 0.6;
+  }
+  
+  #content #spmenu a.active {
+      background-color: #628db6;
+      border-color: #628db6;
+      color: white;
+      opacity: 1;
+  }
+
+  #content #spmenu a.active img {
+      filter: invert(100%);
   }
 }
 

@@ -112,9 +112,9 @@ $(document).ready(function(){
     <div id="content">
         <%= render_flash_messages %>
         <div id="spmenu" class="contextual" style="display:none;">
-            <a href="/projects/aretan"><img src="/images/info.png"><%=l(:label_overview)%></a>
-            <a href="/projects/aretan/blogs"><img src="/images/note.png">Report</a>
-            <a href="/projects/aretan/wiki"><img src="/images/book.png">Wiki</a>
+            <a href="/projects/aretan"<% if controller.controller_name == 'projects' %> class="active"<% end %>><img src="/images/info.png"><%=l(:label_overview)%></a>
+            <a href="/projects/aretan/blogs"<% if controller.controller_name == 'blogs' %> class="active"<% end %>><img src="/images/note.png">Report</a>
+            <a href="/projects/aretan/wiki"<% if controller.controller_name == 'wiki' %> class="active"<% end %>><img src="/images/book.png">Wiki</a>
         </div>
         <%= yield %>
         <%= call_hook :view_layouts_base_content %>

@@ -17,8 +17,6 @@
 <%= link_to_if_authorized(l(:label_history), {:action => 'history', :id => @page.title}, :class => 'icon icon-history') %>
 </div>
 
-<%= wiki_page_breadcrumb(@page) %>
-
 <% unless @content.current_version? %>
   <%= title [@page.pretty_title, project_wiki_page_path(@page.project, @page.title, :version => nil)],
         [l(:label_history), history_project_wiki_page_path(@page.project, @page.title)],
@@ -43,6 +41,8 @@
     </p>
     <hr />
 <% end %>
+
+<h2><%= @page.title %></h2>
 
 <%= render(:partial => "wiki/content", :locals => {:content => @content}) %>
 

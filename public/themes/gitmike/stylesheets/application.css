@@ -92,6 +92,7 @@ h2, h3, h4 { border-bottom: 0; }
 .wiki h1, .wiki h2, .wiki h3 { border-bottom: 0; }
 .wiki.wiki-page h1 { border-bottom: 1px solid #ccc; }
 .wiki.wiki-page > h2 { border-bottom: 1px solid #ccc; padding-bottom: 6px; }
+.wiki.wiki-page > h2:first-of-type { margin-top:0px; }
 
 #main-menu { left: 0; width: 100%; background: #FAFAFA; background: -webkit-linear-gradient(top, #fafafa, #eaeaea); background: linear-gradient(to bottom, #fafafa, #eaeaea); -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#fafafa',endColorstr='#eaeaea')"; border: 1px solid #EAEAEA; border-bottom-color: #CACACA; border-radius: 3px; margin-right: 0; position: relative; }
 #main-menu ul { *zoom: 1; margin-top: 0; padding-left: 0; background-color: transparent !important; }

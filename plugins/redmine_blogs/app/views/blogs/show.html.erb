@@ -31,11 +31,9 @@
 <div class="contextual"></div>
 <% end %>
 
-<p class="breadcrumb"><a href="/projects/aretan/blogs">Report</a> » </p>
-
 <h2><%= @blog.title %></h2>
 
-<div class="wiki">
+<div class="wiki" style="clear:both;">
 <%= textilizable(@blog, :full_description) %>
 </div>
 <p class="author">Posted on <%= authoring @blog.created_on, @blog.author %></p>
