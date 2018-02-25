@@ -135,7 +135,8 @@ class ProjectsController < ApplicationController
     end
 
     @users_by_role = @project.users_by_role
-    @subprojects = @project.children.visible.to_a
+    @wiki = WikiPage.limit(10).includes(:content).reorder("#{WikiContent.table_name}.updated_on DESC").to_a
+    @blog = Blog.limit(10).includes(:author, :project).reorder("#{Blog.table_name}.created_on DESC").to_a
     @news = @project.news.limit(5).includes(:author, :project).reorder("#{News.table_name}.created_on DESC").to_a
     @trackers = @project.rolled_up_trackers.visible
 

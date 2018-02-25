@@ -82,20 +82,47 @@
 </div>
 
 <div class="splitcontentright">
-  <%= render :partial => 'members_box' %>
+  <div class="wiki">
+    <h2 style="margin-top:0.3em;">Most recent update</h2>
+  </div>
+  
+  <% if @blog.any? %>
+  <fieldset class="box">
+    <legend>Report</legend>
+    <div class="wiki">
+    <% date = nil %>
+    <% @blog.each do |row| %>
+    <% if date != format_date(row.created_on) %>
+    <% date = format_date(row.created_on) %>
+    <b>[<%= format_date(row.created_on) %>]</b><br />
+    <% end %>
+    <%= link_to(row.title, {:controller => :blogs, :action => :show, :id => row.id}) %><br />
+    <% end %>
+    </div>
+  </fieldset>
+  <% end %>
 
+  <% if @wiki.any? %>
+  <fieldset class="box">
+    <legend>Wiki</legend>
+    <div class="wiki">
+    <% date = nil %>
+    <% @wiki.each do |row| %>
+    <% if date != format_date(row.content.updated_on) %>
+    <% date = format_date(row.content.updated_on) %>
+    <b>[<%= format_date(row.content.updated_on) %>]</b><br />
+    <% end %>
+    <%= link_to(row.content.page.pretty_title, :controller => 'wiki', :action => 'show', :project_id => row.content.page.project, :id => row.content.page.title) %><br />
+    <% end %>
+    </div>
+  </fieldset>
+  <% end %>
+  
   <% if @news.any? && authorize_for('news', 'index') %>
   <div class="news box">
     <h3><%=l(:label_news_latest)%></h3>
     <%= render :partial => 'news/news', :collection => @news %>
     <p><%= link_to l(:label_news_view_all), project_news_index_path(@project) %></p>
-  </div>
-  <% end %>
-
-  <% if @subprojects.any? %>
-  <div class="projects box">
-    <h3><%=l(:label_subproject_plural)%></h3>
-    <%= @subprojects.collect{|p| link_to p, project_path(p), :class => p.css_classes}.join(", ").html_safe %>
   </div>
   <% end %>
 
