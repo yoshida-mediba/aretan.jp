@@ -85,7 +85,7 @@ div.contact.details, div.deal.details { padding: 15px !important; margin: -11px 
 #sidebar h3 { color: #222; }
 
 #footer { background-color: #F8F8F8; border: 0; border-top: 1px solid #E0E0E0; color: #636363; margin-top: 45px; padding: 15px; }
-#footer .bgl .bgr:after { content: " and gitmike theme"; }
+#footer .bgl .bgr:after { content: " & Gitmike"; }
 
 h2, h3, h4 { border-bottom: 0; }
 
@@ -214,7 +214,6 @@ option { border-bottom: 1px dotted #ddd; }
 
 img.gravatar { box-shadow: 0 3px 5px rgba(0, 0, 0, 0.05); }
 
-.controller-wiki div#content > div.contextual { margin-top: 3px; }
 .controller-wiki div#content > div.wiki { padding: 0 8px 8px 8px; }
 
 div.wiki { -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; color: #333; font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; line-height: 1.6; word-wrap: break-word; }

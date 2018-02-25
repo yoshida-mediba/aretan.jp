@@ -47,6 +47,7 @@ class MyController < ApplicationController
 
   # Show user's page
   def page
+    redirect_to home_path
     @user = User.current
     @blocks = @user.pref[:my_page_layout] || DEFAULT_LAYOUT
   end
