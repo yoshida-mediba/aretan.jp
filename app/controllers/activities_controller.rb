@@ -21,6 +21,7 @@ class ActivitiesController < ApplicationController
   accept_rss_auth :index
 
   def index
+    render_404
     @days = Setting.activity_days_default.to_i
 
     if params[:from]

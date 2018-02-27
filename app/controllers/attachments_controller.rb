@@ -61,6 +61,7 @@ class AttachmentsController < ApplicationController
 
     if stale?(:etag => @attachment.digest)
       # images are sent inline
+      response.headers["Cache-Control"] = 'max-age=604800'
       send_file @attachment.diskfile, :filename => filename_for_content_disposition(@attachment.filename),
                                       :type => detect_content_type(@attachment),
                                       :disposition => disposition(@attachment)

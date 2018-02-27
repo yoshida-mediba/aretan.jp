@@ -25,7 +25,7 @@
                 :title => l(:button_delete) %>
   <% end %>
   <% if options[:author] %>
-    <span class="author"><%= attachment.author %>, <%= format_time(attachment.created_on) %></span>
+    <span class="author"><%= format_date(attachment.created_on) %></span>
   <% end %>
   </p>
 <% end %>
