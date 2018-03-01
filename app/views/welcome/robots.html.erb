@@ -1,10 +1,3 @@
 User-agent: *
-<% @projects.each do |p| -%>
-Disallow: /projects/<%= p.to_param %>/repository
-Disallow: /projects/<%= p.to_param %>/issues
-Disallow: /projects/<%= p.to_param %>/activity
-<% end -%>
-Disallow: /issues/gantt
-Disallow: /issues/calendar
-Disallow: /activity
-Disallow: /search
+Disallow: /login
+Sitemap: <%= url_for :controller => 'sitemap', :action => 'index', :only_path => false %>.xml
