@@ -4,9 +4,11 @@
 <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 <title><%= title = html_title %></title>
+<meta name="description" content="<%= strip_tags(html_description) %>">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:site" content="@aretan" />
+<meta name="twitter:description" content="<%= strip_tags(html_description) %>">
 <meta property="og:title" content="<%= title %>" />
 <meta property="og:image" content="https://aretan.jp/images/aretan.jpg" />
 <%= csrf_meta_tag %>
@@ -28,10 +30,19 @@ $(document).ready(function(){
   });
 });
 </script>
-<!-- page specific tags -->
+<script>
+(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = 'https://connect.facebook.net/ja_JP/sdk.js#xfbml=1&autoLogAppEvents=1&version=v2.12&appId=1927655763976170';
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
+</script>
 <%= yield :header_tags -%>
 </head>
 <body class="<%= body_css_classes %>">
+<div id="fb-root"></div>  
 <%= call_hook :view_layouts_base_body_top %>
 <div id="wrapper">
 

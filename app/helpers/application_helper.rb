@@ -551,6 +551,14 @@ module ApplicationHelper
     end
   end
 
+  def html_description(content=nil)
+    if content.nil?
+      @description
+    else
+      @description = content.gsub("\n", "").truncate(140)
+    end
+  end
+  
   # Returns the theme, controller name, and action as css classes for the
   # HTML body.
   def body_css_classes

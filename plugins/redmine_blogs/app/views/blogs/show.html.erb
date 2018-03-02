@@ -36,6 +36,9 @@
 <div class="wiki" style="clear:both;">
 <%= textilizable(@blog, :full_description) %>
 </div>
+
+<div class="fb-share-button" data-href="<%= url_for %>" data-layout="button_count" data-size="large" data-mobile-iframe="true"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=<%= CGI.escape url_for(:only_path => false) %>&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">シェア</a></div>
+
 <p class="author">Posted on <%= authoring @blog.created_on, @blog.author %></p>
 
 <%= link_to_attachments @blog %>

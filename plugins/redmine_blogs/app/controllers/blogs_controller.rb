@@ -3,6 +3,7 @@ class BlogsController < ApplicationController
 
   helper :attachments
   include AttachmentsHelper
+  include ApplicationHelper
 
   layout 'header', :only => [:index, :new, :show]
 
@@ -32,6 +33,8 @@ class BlogsController < ApplicationController
   end
 
   def show
+    html_description @blog.short_description
+    
     @next = Blog.where("id < ?", params[:id]).order("id DESC").first
     @prev = Blog.where("id > ?", params[:id]).order("id ASC").first
   end
