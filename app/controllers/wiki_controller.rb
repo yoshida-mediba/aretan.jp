@@ -41,6 +41,7 @@ class WikiController < ApplicationController
   include AttachmentsHelper
   helper :watchers
   include Redmine::Export::PDF
+  include ApplicationHelper
 
   # List of pages, sorted alphabetically and by parent (hierarchy)
   def index
@@ -113,6 +114,8 @@ class WikiController < ApplicationController
       @content.current_version? &&
       Redmine::WikiFormatting.supports_section_edit?
 
+    html_description @content.text
+    
     respond_to do |format|
       format.html
       format.api
