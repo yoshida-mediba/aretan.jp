@@ -46,6 +46,8 @@
 
 <%= render(:partial => "wiki/content", :locals => {:content => @content}) %>
 
+<%= render :partial => 'common/social' %>
+
 <%= link_to_attachments @page %>
 
 <% if @editable && authorize_for('wiki', 'add_attachment') %>

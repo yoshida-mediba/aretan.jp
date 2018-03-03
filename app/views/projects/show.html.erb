@@ -127,6 +127,8 @@
   <% end %>
 
   <%= call_hook(:view_projects_show_right, :project => @project) %>
+
+  <%= render :partial => 'common/social' %>
 </div>
 
 <% content_for :sidebar do %>
