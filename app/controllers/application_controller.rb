@@ -63,7 +63,7 @@ class ApplicationController < ActionController::Base
   include Redmine::SudoMode::Controller
 
   def original_key
-    if request.headers["X-Original-Key"] != 'redmine-1344227633'
+    if request.headers["X-Original-Key"] != Redmine::Configuration['custom_header']
       render_error :status => 403, :message => "Require Custom Header."
     end
   end
