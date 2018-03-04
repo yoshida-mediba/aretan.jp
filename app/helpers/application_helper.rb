@@ -555,7 +555,15 @@ module ApplicationHelper
     if content.nil?
       @description
     else
-      @description = content.gsub("\n", "").truncate(140)
+      @description = content
+    end
+  end
+
+  def html_image(content=nil)
+    if content.nil?
+      @image
+    else
+      @image = content
     end
   end
   

@@ -4,13 +4,13 @@
 <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 <title><%= title = html_title %></title>
-<meta name="description" content="<%= strip_tags(html_description) %>">
+<meta name="description" content="<%= html_description %>">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:site" content="@aretan" />
-<meta name="twitter:description" content="<%= strip_tags(html_description) %>">
+<meta name="twitter:description" content="<%= html_description %>">
 <meta property="og:title" content="<%= title %>" />
-<meta property="og:image" content="https://aretan.jp/images/aretan.jpg" />
+<meta property="og:image" content="<%= html_image || 'https://aretan.jp/images/aretan.jpg' %>" />
 <%= csrf_meta_tag %>
 <%= favicon %>
 <%= stylesheet_link_tag 'jquery/jquery-ui-1.11.0', 'application', 'responsive', :media => 'all' %>

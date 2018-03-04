@@ -44,6 +44,14 @@ class Blog < ActiveRecord::Base
     user == author && user.allowed_to?(:manage_blogs, project, :global => true)
   end
 
+  def head_image()
+    attachments.each do |attachment|
+      if attachment.is_image?
+        return attachment
+      end
+    end
+  end
+
   def attachments_deletable?(user = User.current)
     true
   end
@@ -54,7 +62,7 @@ class Blog < ActiveRecord::Base
 
   def short_description()
     desc, more = description.split(/\{\{more\}\}/mi)
-    desc
+    ActionController::Base.helpers.strip_tags(desc.gsub("\n", "").truncate(140))
   end
 
   def has_more?()

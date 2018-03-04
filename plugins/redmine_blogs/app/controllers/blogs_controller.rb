@@ -17,12 +17,10 @@ class BlogsController < ApplicationController
 
   def index
     @tag = params[:tag] if params[:tag]
-    @blogs_pages, @blogs = paginate Blog.includes(:author, :project, :tags).
+    @blogs_pages, @blogs = paginate Blog.includes(:author, :project).
                                          where(
                                            @user ? ["author_id = ? and project_id = ?", @user, @project]
-                                           : @tag ? ["tags.name = ? and project_id = ?", @tag, @project]
                                            : ["project_id = ?", @project]).
-                                         references(:tags).
                                          order("#{Blog.table_name}.created_on DESC"),
                                     :per_page => 5
     respond_to do |format|
@@ -34,7 +32,10 @@ class BlogsController < ApplicationController
 
   def show
     html_description @blog.short_description
-    
+    if image = @blog.head_image()
+      html_image download_named_attachment_url(image, image.filename)
+    end
+
     @next = Blog.where("id < ?", params[:id]).order("id DESC").first
     @prev = Blog.where("id > ?", params[:id]).order("id ASC").first
   end

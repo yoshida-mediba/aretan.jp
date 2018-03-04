@@ -5,14 +5,20 @@
 <div id="blogs">
   <% blogs.each do |blog| %>
   <%= div_for(blog) do %>
-  <div class="box">
-    <h3><%= link_to blog.title, :controller => 'blogs', :action => 'show', :id => blog %></h3>
-    <div class="wiki">
-    <%= textilizable(blog, :short_description) %>
-    <%= link_to(l(:label_read_more), { :action => :show, :id => blog.id }) if blog.has_more? %>
+  <div class="box" style="padding:0px; overflow:hidden;">
+    <% if image = blog.head_image() %>
+    <div class="image" style="height:100px;">
+      <img src="<%= download_named_attachment_url(image, image.filename) %>" style="height:100px; object-fit:cover; width:100%; border-bottom:1px solid #e4e4e4;">
     </div>
-    <p class="author"><%= authoring blog.created_on, blog.author %></p>
-  </div>
+    <% end %>
+    <div class="content" style="margin:10px;">
+      <h3><%= link_to blog.title, :controller => 'blogs', :action => 'show', :id => blog %></h3>
+      <div class="wiki">
+	<%= blog.short_description %>
+      </div>
+      <p class="author"><%= authoring blog.created_on, blog.author %></p>
+    </div>
+  </a>
   <% end %>
 <% end %>
 </div>
