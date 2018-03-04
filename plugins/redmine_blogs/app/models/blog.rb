@@ -10,8 +10,8 @@ class Blog < ActiveRecord::Base
     :as => :commented, :dependent => :delete_all
 
   acts_as_taggable
-  acts_as_attachable
-
+  acts_as_attachable :edit_permission => :manage_blogs,
+                     :delete_permission => :manage_blogs
   validates_presence_of :title, :description
   validates_length_of :title, :maximum => 255
   validates_length_of :summary, :maximum => 255
@@ -50,10 +50,6 @@ class Blog < ActiveRecord::Base
         return attachment
       end
     end
-  end
-
-  def attachments_deletable?(user = User.current)
-    true
   end
 
   def attachments_visible?(user = User.current)

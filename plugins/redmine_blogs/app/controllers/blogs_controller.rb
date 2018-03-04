@@ -16,7 +16,6 @@ class BlogsController < ApplicationController
   accept_rss_auth :index
 
   def index
-    @tag = params[:tag] if params[:tag]
     @blogs_pages, @blogs = paginate Blog.includes(:author, :project).
                                          where(
                                            @user ? ["author_id = ? and project_id = ?", @user, @project]
