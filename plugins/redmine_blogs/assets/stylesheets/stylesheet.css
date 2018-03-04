@@ -14,5 +14,5 @@ div.tags a, .icon22-tags {
 
 dt.blog-post { background-image: url(../images/balloon.png); }
 dt.blog-comment { background-image: url(../images/balloons.png); }
-p.author { text-align:right; margin-bottom:0px; }
+p.author { text-align:right; margin:0px; }
 
