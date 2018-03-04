@@ -8,11 +8,11 @@
   <div class="box">
     <% if (image = blog.head_image()) && image.present? %>
     <div class="image">
-      <img src="<%= download_named_attachment_url(image, image.filename) %>">
+      <a href="<%= url_for :action => 'show', :id => blog %>"><img src="<%= download_named_attachment_url(image, image.filename) %>"></a>
     </div>
     <% end %>
     <div class="content">
-      <h3><%= link_to blog.title, :controller => 'blogs', :action => 'show', :id => blog %></h3>
+      <h3><%= link_to blog.title, :action => 'show', :id => blog %></h3>
       <div class="wiki">
 	<%= blog.short_description %>
       </div>
