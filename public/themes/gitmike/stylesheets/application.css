@@ -344,19 +344,29 @@ em.hidden { border: solid 1px black; color: rgba(0, 0, 0, 0); }
 #content #paginate .article { width: 100%; margin: 5px; }
 #content #paginate .no-article { opacity:0; }
 
+#blogs .blog .box { padding:0px; overflow:hidden; }
+#blogs .blog .box .image { height:150px; width:22%; float:left; }
+#blogs .blog .box .image img { height:150px; width:100%; object-fit:cover; border:none; }
+#blogs .blog .box .content { position: absolute; margin:10px; height:130px; width:74%; left: 23%; }
+#blogs .blog .box .content .author { position: absolute; right:0px; bottom:0px; }
+
 @media all and (max-width: 899px) { #main { margin: 0; }
   div#content > div.contextual { margin-top: 0; margin-right: 0; }
   div#content > h2, div#content h2.contacts_header { background-color: #fafafa; border-bottom: 1px solid #eee; }
   div.wiki ul.toc.right { float: none; display: block; margin: 0; }
   #sidebarHandler { display: none; }
   a.wiki-anchor { display: initial; }
-  .js-sidebar .wiki { padding-left:0px;}
-  .js-sidebar .wiki p { margin-bottom:4px;}
-  .js-sidebar .wiki h3 { font-size:11px; line-height:19px; margin:0px; }
-  .js-sidebar .wiki h3 .wiki-anchor { display:none; }
-  .js-sidebar .wiki .wiki_extensions_recent { margin-left:8px; }
-  .js-sidebar .wiki .wiki_extensions_recent b { color:lightsteelblue; }
-  .js-sidebar .wiki .wiki_extensions_recent b:before { content:"["; }
-  .js-sidebar .wiki .wiki_extensions_recent b:after { content:']'; }
+  .js-sidebar .wiki { padding-left: 0px;}
+  .js-sidebar .wiki p { margin-bottom: 4px;}
+  .js-sidebar .wiki h3 { font-size: 11px; line-height: 19px; margin: 0px; }
+  .js-sidebar .wiki h3 .wiki-anchor { display: none; }
+  .js-sidebar .wiki .wiki_extensions_recent { margin-left: 8px; }
+  .js-sidebar .wiki .wiki_extensions_recent b { color: lightsteelblue; }
+  .js-sidebar .wiki .wiki_extensions_recent b:before { content: '['; }
+  .js-sidebar .wiki .wiki_extensions_recent b:after { content: ']'; }
   #content #paginate .article { width: unset; }
+  #blogs .blog .box .image { height: 100px; width: 100%; float: unset;}
+  #blogs .blog .box .image img { height: 100px; border-bottom: 1px solid #e4e4e4; }
+  #blogs .blog .box .content { position: unset; margin: 10px; height: unset; width: unset; left: unset; }
+  #blogs .blog .box .content .author { position: unset; }
 }

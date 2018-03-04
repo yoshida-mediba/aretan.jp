@@ -32,7 +32,7 @@ class BlogsController < ApplicationController
 
   def show
     html_description @blog.short_description
-    if image = @blog.head_image()
+    if (image = @blog.head_image()) && image.present?
       html_image download_named_attachment_url(image, image.filename)
     end
 
