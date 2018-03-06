@@ -71,6 +71,7 @@ class AttachmentsController < ApplicationController
   def thumbnail
     if @attachment.thumbnailable? && tbnail = @attachment.thumbnail(:size => params[:size])
       if stale?(:etag => tbnail)
+        response.headers["Cache-Control"] = 'max-age=604800'
         send_file tbnail,
           :filename => filename_for_content_disposition(@attachment.filename),
           :type => detect_content_type(@attachment),
