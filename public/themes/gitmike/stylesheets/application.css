@@ -341,8 +341,8 @@ a.buy-button.blue { background: #4C728A !important; background-image: -webkit-li
 
 em { font-style: normal; border-bottom: solid 1px black; cursor: pointer; color: red; }
 em.hidden { border: solid 1px black; color: rgba(0, 0, 0, 0); }
-#content #paginate .article { width: 100%; margin: 5px; }
-#content #paginate .no-article { display:none; }
+#content #paginate .article { width: 100%; margin: 5px; padding: 5px 10px 10px 10px; }
+#content #paginate .no-article { display: none; }
 
 #blogs .blog .box { padding: 0px; overflow: hidden; display: flex; }
 #blogs .blog .box .image { height: 150px; }
@@ -357,8 +357,8 @@ em.hidden { border: solid 1px black; color: rgba(0, 0, 0, 0); }
   div.wiki ul.toc.right { float: none; display: block; margin: 0; }
   #sidebarHandler { display: none; }
   a.wiki-anchor { display: initial; }
-  .js-sidebar .wiki { padding-left: 0px;}
-  .js-sidebar .wiki p { margin-bottom: 4px;}
+  .js-sidebar .wiki { padding-left: 0px; }
+  .js-sidebar .wiki p { margin-bottom: 4px; }
   .js-sidebar .wiki h3 { font-size: 11px; line-height: 19px; margin: 0px; }
   .js-sidebar .wiki h3 .wiki-anchor { display: none; }
   .js-sidebar .wiki .wiki_extensions_recent { margin-left: 8px; }

@@ -51,7 +51,7 @@
   <legend>新しい記事 (<%= authoring @prev.created_on, @prev.author %>)</legend>
   <h3><%= link_to @prev.title, :controller => 'blogs', :action => 'show', :id => @prev %></h3>
   <div class="wiki">
-    <%= textilizable(@prev, :short_description) %>
+    <%= @prev.short_description %>
   </div>
 </fieldset>
 <% else %>
@@ -62,7 +62,7 @@
   <legend>過去の記事 (<%= authoring @next.created_on, @next.author %>)</legend>
   <h3><%= link_to @next.title, :controller => 'blogs', :action => 'show', :id => @next %></h3>
   <div class="wiki">
-    <%= textilizable(@next, :short_description) %>
+    <%= @next.short_description %>
   </div>
 </fieldset>
 <% else %>
