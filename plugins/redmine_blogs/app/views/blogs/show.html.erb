@@ -49,10 +49,20 @@
 <% unless @prev.nil? %>
 <fieldset class="box article">
   <legend>新しい記事 (<%= authoring @prev.created_on, @prev.author %>)</legend>
-  <h3><%= link_to @prev.title, :controller => 'blogs', :action => 'show', :id => @prev %></h3>
-  <div class="wiki">
-    <%= @prev.short_description %>
-  </div>
+  <div>
+    <% if (image = @prev.head_image()) && image.present? %>
+    <div class="image">
+      <a href="<%= url_for :action => 'show', :id => @prev %>">
+	<img src="<%= download_named_attachment_url(image, image.filename) %>">
+      </a>
+    </div>
+    <% end %>
+    <div>
+      <h3><%= link_to @prev.title, :controller => 'blogs', :action => 'show', :id => @prev %></h3>
+      <div class="wiki">
+	<%= @prev.short_description %>
+      </div>
+    </div>
 </fieldset>
 <% else %>
 <fieldset class="box article no-article"></fieldset>
