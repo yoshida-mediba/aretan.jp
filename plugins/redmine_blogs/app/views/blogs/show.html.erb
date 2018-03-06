@@ -57,12 +57,13 @@
       </a>
     </div>
     <% end %>
-    <div>
+    <div class="text">
       <h3><%= link_to @prev.title, :controller => 'blogs', :action => 'show', :id => @prev %></h3>
       <div class="wiki">
 	<%= @prev.short_description %>
       </div>
     </div>
+  </div>
 </fieldset>
 <% else %>
 <fieldset class="box article no-article"></fieldset>
@@ -70,9 +71,20 @@
 <% unless @next.nil? %>
 <fieldset class="box article">
   <legend>過去の記事 (<%= authoring @next.created_on, @next.author %>)</legend>
-  <h3><%= link_to @next.title, :controller => 'blogs', :action => 'show', :id => @next %></h3>
-  <div class="wiki">
-    <%= @next.short_description %>
+  <div>
+    <% if (image = @next.head_image()) && image.present? %>
+    <div class="image">
+      <a href="<%= url_for :action => 'show', :id => @next %>">
+	<img src="<%= thumbnail_url(image, 150) %>">
+      </a>
+    </div>
+    <% end %>
+    <div class="text">
+      <h3><%= link_to @next.title, :controller => 'blogs', :action => 'show', :id => @next %></h3>
+      <div class="wiki">
+	<%= @next.short_description %>
+      </div>
+    </div>
   </div>
 </fieldset>
 <% else %>
