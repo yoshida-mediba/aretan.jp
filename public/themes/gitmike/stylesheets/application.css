@@ -345,7 +345,7 @@ em.hidden { border: solid 1px black; color: rgba(0, 0, 0, 0); }
 #content #paginate .no-article { display: none; }
 #content #paginate .article > div { display: flex; }
 #content #paginate .article > div .image { width: 80px; margin-top: 3px; }
-#content #paginate .article > div .image img { object-fit: cover; width: 75px; height: 75px; }
+#content #paginate .article > div .image img { object-fit: cover; width: 75px; height: 75px; border-radius: 5px; }
 
 #blogs .blog .box { padding: 0px; overflow: hidden; display: flex; }
 #blogs .blog .box .image { height: 150px; }

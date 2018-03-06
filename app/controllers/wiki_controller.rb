@@ -114,7 +114,10 @@ class WikiController < ApplicationController
       @content.current_version? &&
       Redmine::WikiFormatting.supports_section_edit?
 
-    html_description @content.text
+    html_description ActionController::Base.helpers.strip_tags(@content.text.gsub("\n", "").truncate(140))
+    if (image = @page.head_image()) && image.present?
+      html_image download_named_attachment_url(image, image.filename)
+    end
     
     respond_to do |format|
       format.html

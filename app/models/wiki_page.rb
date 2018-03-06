@@ -195,6 +195,14 @@ class WikiPage < ActiveRecord::Base
     !protected? || usr.allowed_to?(:protect_wiki_pages, wiki.project)
   end
 
+  def head_image()
+    attachments.each do |attachment|
+      if attachment.is_image?
+        return attachment
+      end
+    end
+  end
+
   def attachments_deletable?(usr=User.current)
     editable_by?(usr) && super(usr)
   end
