@@ -342,7 +342,7 @@ a.buy-button.blue { background: #4C728A !important; background-image: -webkit-li
 em { font-style: normal; border-bottom: solid 1px black; cursor: pointer; color: red; }
 em.hidden { border: solid 1px black; color: rgba(0, 0, 0, 0); }
 #content #paginate .article { width: 100%; margin: 5px; }
-#content #paginate .no-article { opacity:0; }
+#content #paginate .no-article { display:none; }
 
 #blogs .blog .box { padding: 0px; overflow: hidden; display: flex; }
 #blogs .blog .box .image { height: 150px; }
