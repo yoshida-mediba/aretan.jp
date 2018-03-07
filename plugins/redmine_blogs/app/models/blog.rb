@@ -12,11 +12,12 @@ class Blog < ActiveRecord::Base
   acts_as_taggable
   acts_as_attachable :edit_permission => :manage_blogs,
                      :delete_permission => :manage_blogs
-  validates_presence_of :title, :description
+  validates_presence_of :title, :description, :report_date
   validates_length_of :title, :maximum => 255
   validates_length_of :summary, :maximum => 255
+  validates_length_of :report_date, :maximum => 10
 
-  attr_accessible :summary, :description, :title, :tag_list
+  attr_accessible :summary, :description, :title, :tag_list, :report_date
 
   acts_as_activity_provider :type => 'blogs',
                             :scope => preload(:author, :project),
@@ -37,7 +38,7 @@ class Blog < ActiveRecord::Base
 
   # returns latest blogs for projects visible by user
   def self.latest(user = User.current, count = 5)
-    Blog.includes(:author, :project).visible(user).limit(count).order(:created_on => :desc)
+    Blog.includes(:author, :project).visible(user).limit(count).order(:report_date => :desc)
   end
 
   def editable_by?(user = User.current)
@@ -74,6 +75,7 @@ class Blog < ActiveRecord::Base
     generator_for :title, :method => :next_title
     generator_for :description, :method => :next_description
     generator_for :summary, :method => :next_summary
+    generator_for :report_date, :method => :next_report_date
 
     def self.next_title
       @last_title ||= 'Title 0000'
@@ -91,6 +93,12 @@ class Blog < ActiveRecord::Base
       @last_summary ||= 'Summary 0000'
       @last_summary.succ!
       @last_summary
+    end
+
+    def self.next_report_date
+      @last_report_date ||= '2000-01-01'
+      @last_report_date.succ!
+      @last_report_date
     end
 
   end

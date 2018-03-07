@@ -20,7 +20,7 @@ class BlogsController < ApplicationController
                                          where(
                                            @user ? ["author_id = ? and project_id = ?", @user, @project]
                                            : ["project_id = ?", @project]).
-                                         order("#{Blog.table_name}.created_on DESC"),
+                                         order("#{Blog.table_name}.report_date DESC"),
                                     :per_page => 5
     respond_to do |format|
       format.html { render :layout => !request.xhr? }

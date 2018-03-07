@@ -86,10 +86,12 @@ ActiveRecord::Schema.define(version: 20171030094107) do
     t.datetime "created_on"
     t.integer  "project_id",     default: 0,  null: false
     t.integer  "author_id",      default: 0,  null: false
+    t.date     "report_date"
   end
 
   add_index "blogs", ["author_id"], name: "index_blogs_on_author_id"
   add_index "blogs", ["project_id"], name: "index_blogs_on_project_id"
+  add_index "blogs", ["report_date"], name: "index_blogs_on_report_date"
 
   create_table "boards", force: :cascade do |t|
     t.integer "project_id",                   null: false

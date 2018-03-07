@@ -37,7 +37,7 @@
 <%= textilizable(@blog, :full_description) %>
 </div>
 
-<p class="author">Posted on <%= authoring @blog.created_on, @blog.author %></p>
+<p class="author">Posted on <%= authoring @blog.report_date, @blog.author %></p>
 
 <%= render :partial => 'common/social' %>
 
@@ -48,7 +48,7 @@
 <div id="paginate" style="display:none;">
 <% unless @prev.nil? %>
 <fieldset class="box article">
-  <legend>新しい記事 (<%= authoring @prev.created_on, @prev.author %>)</legend>
+  <legend>新しい記事 (<%= authoring @prev.report_date, @prev.author %>)</legend>
   <div>
     <% if (image = @prev.head_image()) && image.present? %>
     <div class="image">
@@ -70,7 +70,7 @@
 <% end %>
 <% unless @next.nil? %>
 <fieldset class="box article">
-  <legend>過去の記事 (<%= authoring @next.created_on, @next.author %>)</legend>
+  <legend>過去の記事 (<%= authoring @next.report_date, @next.author %>)</legend>
   <div>
     <% if (image = @next.head_image()) && image.present? %>
     <div class="image">
