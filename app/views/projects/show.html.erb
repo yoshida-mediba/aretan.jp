@@ -92,9 +92,9 @@
     <div class="wiki">
     <% date = nil %>
     <% @blog.each do |row| %>
-    <% if date != format_date(row.created_on) %>
-    <% date = format_date(row.created_on) %>
-    <b>[<%= format_date(row.created_on) %>]</b><br />
+    <% if date != format_date(row.report_date) %>
+    <% date = format_date(row.report_date) %>
+    <b>[<%= format_date(row.report_date) %>]</b><br />
     <% end %>
     <%= link_to(row.title, {:controller => :blogs, :action => :show, :id => row.id}) %><br />
     <% end %>
