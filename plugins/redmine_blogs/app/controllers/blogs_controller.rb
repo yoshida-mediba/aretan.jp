@@ -21,7 +21,7 @@ class BlogsController < ApplicationController
                                            @user ? ["author_id = ? and project_id = ?", @user, @project]
                                            : ["project_id = ?", @project]).
                                          order("#{Blog.table_name}.report_date DESC"),
-                                    :per_page => 5
+                                    :per_page => 10
     respond_to do |format|
       format.html { render :layout => !request.xhr? }
       format.atom { render_feed(@blogs, :title => "#{Setting.app_title}: Report") }
@@ -35,8 +35,8 @@ class BlogsController < ApplicationController
       html_image download_named_attachment_url(image, image.filename)
     end
 
-    @next = Blog.where("id < ?", params[:id]).order("id DESC").first
-    @prev = Blog.where("id > ?", params[:id]).order("id ASC").first
+    @next = Blog.where("report_date < ?", @blog.report_date).order("report_date DESC").first
+    @prev = Blog.where("report_date > ?", @blog.report_date).order("report_date ASC").first
   end
 
   def new

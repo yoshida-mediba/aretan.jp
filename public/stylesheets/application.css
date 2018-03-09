@@ -1391,3 +1391,4 @@ color: #555; text-shadow: 1px 1px 0 #fff;
 
 .socials { display:flex; margin-top:10px; }
 .socials .social { margin:5px; }
+.ambox { display:none; }
