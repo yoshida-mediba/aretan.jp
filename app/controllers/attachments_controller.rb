@@ -61,7 +61,7 @@ class AttachmentsController < ApplicationController
 
     if stale?(:etag => @attachment.digest)
       # images are sent inline
-      response.headers["Cache-Control"] = 'max-age=604800'
+      expires_in 7.days, :public => true
       send_file @attachment.diskfile, :filename => filename_for_content_disposition(@attachment.filename),
                                       :type => detect_content_type(@attachment),
                                       :disposition => disposition(@attachment)
@@ -71,7 +71,7 @@ class AttachmentsController < ApplicationController
   def thumbnail
     if @attachment.thumbnailable? && tbnail = @attachment.thumbnail(:size => params[:size])
       if stale?(:etag => tbnail)
-        response.headers["Cache-Control"] = 'max-age=604800'
+        expires_in 7.days, :public => true
         send_file tbnail,
           :filename => filename_for_content_disposition(@attachment.filename),
           :type => detect_content_type(@attachment),
