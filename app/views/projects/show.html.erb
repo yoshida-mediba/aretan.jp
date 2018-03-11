@@ -119,11 +119,17 @@
   <% end %>
   
   <% if @news.any? && authorize_for('news', 'index') %>
-  <div class="news box">
-    <h3><%=l(:label_news_latest)%></h3>
-    <%= render :partial => 'news/news', :collection => @news %>
-    <p><%= link_to l(:label_news_view_all), project_news_index_path(@project) %></p>
-  </div>
+  <fieldset class="box">
+    <legend><%=l(:label_news_latest)%></legend>
+    <% date = nil %>
+    <% @news.each do |row| %>
+    <% if date != format_date(row.created_on) %>
+    <% date = format_date(row.created_on) %>
+    <b>[<%= format_date(row.created_on) %>]</b><br />
+    <% end %>
+    <%= link_to(row.title, {:controller => :news, :action => :show, :id => row.id}) %><br />
+    <% end %>
+  </fieldset>
   <% end %>
 
   <%= call_hook(:view_projects_show_right, :project => @project) %>
