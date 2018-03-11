@@ -216,7 +216,7 @@ img.gravatar { box-shadow: 0 3px 5px rgba(0, 0, 0, 0.05); }
 
 .controller-blogs div#content > div.wiki,.controller-wiki div#content > div.wiki { padding: 0 8px 8px 8px; }
 
-div.wiki { -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; color: #333; font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; line-height: 1.6; word-wrap: break-word; }
+div.wiki { -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; color: #333; font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; line-height: 1.6; word-break: break-all; }
 div.wiki:before { display: table; content: ""; }
 div.wiki:after { display: table; clear: both; content: ""; }
 div.wiki a { background-color: transparent; text-decoration: none; text-decoration-skip: objects; }
