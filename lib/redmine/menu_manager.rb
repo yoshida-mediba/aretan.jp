@@ -98,8 +98,22 @@ module Redmine
           return render_menu_node_with_children(node, project)
         else
           caption, url, selected = extract_node_details(node, project)
-          return content_tag('li',
-                               render_single_menu_node(node, caption, url, selected))
+          if project.nil?
+            return content_tag('li', render_single_menu_node(node, caption, url, selected))
+          else
+            icon = case url
+                   when '/' then
+                     '<img src="/images/info.png">'
+                   else case url[:controller]
+                        when 'blogs' then
+                          '<img src="/images/note.png">'
+                        when 'wiki' then
+                          '<img src="/images/book.png">'
+                        else ''
+                        end
+                   end
+            return content_tag('li', render_single_menu_node(node, icon + caption, url, selected))
+          end
         end
       end
 
@@ -155,7 +169,7 @@ module Redmine
           url = '#'
           options.reverse_merge!(:onclick => 'return false;')
         end
-        link_to(h(caption), url, options)
+        link_to(raw(caption), url, options)
       end
 
       def render_unattached_menu_item(menu_item, project)
