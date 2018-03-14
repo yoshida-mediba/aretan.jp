@@ -37,7 +37,7 @@
 <%= textilizable(@blog, :full_description) %>
 </div>
 
-<p class="author">Posted on <%= authoring @blog.report_date, @blog.author %></p>
+<p class="author"><%= authoring @blog.report_date, @blog.author %></p>
 
 <%= render :partial => 'common/social' %>
 
