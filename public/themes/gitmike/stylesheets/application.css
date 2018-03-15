@@ -370,6 +370,7 @@ em.hidden { border: solid 1px black; color: rgba(0, 0, 0, 0); }
   .js-sidebar .wiki .wiki_extensions_recent b { color: lightsteelblue; }
   .js-sidebar .wiki .wiki_extensions_recent b:before { content: '['; }
   .js-sidebar .wiki .wiki_extensions_recent b:after { content: ']'; }
+  .js-project-menu ul li a img { display: none; }
   #content #paginate .article { width: unset; }
   #blogs .blog .box { display: block; }
   #blogs .blog .box .image { height: 100px; width: 100%; }
