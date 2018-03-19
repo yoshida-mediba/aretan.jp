@@ -59,7 +59,7 @@ class AttachmentsController < ApplicationController
       @attachment.increment_download
     end
 
-    if stale?(:etag => @attachment.digest)
+    if stale?(:etag => @attachment.digest, :template => false)
       # images are sent inline
       expires_in 7.days, :public => true
       send_file @attachment.diskfile, :filename => filename_for_content_disposition(@attachment.filename),
@@ -70,7 +70,7 @@ class AttachmentsController < ApplicationController
 
   def thumbnail
     if @attachment.thumbnailable? && tbnail = @attachment.thumbnail(:size => params[:size])
-      if stale?(:etag => tbnail)
+      if stale?(:etag => tbnail, :template => false)
         expires_in 7.days, :public => true
         send_file tbnail,
           :filename => filename_for_content_disposition(@attachment.filename),
