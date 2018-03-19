@@ -11,8 +11,9 @@
 <meta name="twitter:description" content="<%= html_description %>">
 <meta property="og:title" content="<%= title %>" />
 <meta property="og:url" content="<%= url_for :only_path => false %>" />
-<meta property="og:image" content="<%= html_image || 'https://aretan.jp/images/aretan.jpg' %>" />
+<meta property="og:image" content="<%= html_image || url_for({:controller => 'welcome', :only_path => false}) + 'images/aretan.jpg' %>" />
 <meta name="format-detection" content="telephone=no, email=no, address=no">
+<link rel="alternate" type="application/rss+xml" href="<%= url_for({:controller => 'welcome', :only_path => false}) + 'projects/aretan/blogs.rss' %>" />
 <link rel="canonical" href="<%= url_for :only_path => false %>" />
 <%= csrf_meta_tag %>
 <%= favicon %>
