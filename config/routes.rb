@@ -364,6 +364,7 @@ Rails.application.routes.draw do
 
   match 'uploads', :to => 'attachments#upload', :via => :post
 
+  get '', :to => 'welcome#index'
   get 'robots.txt', :to => 'welcome#robots'
 
   Dir.glob File.expand_path("plugins/*", Rails.root) do |plugin_dir|
