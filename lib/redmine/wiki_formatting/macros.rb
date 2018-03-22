@@ -251,6 +251,37 @@ module Redmine
           raise "Attachment #{filename} not found"
         end
       end
+
+      desc "Displays a list of pages that were changed recently. " + "'\n\n" +
+        " !{{recent}}" + "'\n" +
+        " !{{recent(number_of_days)}}"
+      macro :recent do |obj, args|
+        page = obj.page
+        return nil unless page
+        project = page.project
+        return nil unless project
+        days = 5
+        days = args[0].strip.to_i if args.length > 0
+
+        return nil if days < 1      
+
+        pages = WikiPage.includes(:content).where([" #{WikiPage.table_name}.wiki_id = ? and #{WikiContent.table_name}.updated_on > ?", page.wiki_id, Date.today - days])
+                .order("#{WikiContent.table_name}.updated_on desc")
+        o = '<div class="wiki_extensions_recent">'
+        date = nil
+        pages.each {|page|
+          content = page.content
+          updated_on = Date.new(content.updated_on.year, content.updated_on.month, content.updated_on.day)
+          if date != updated_on
+            date = updated_on
+            o << "<b>" + format_date(date) + "</b><br/>"
+          end
+          o << link_to(content.page.pretty_title, :controller => 'wiki', :action => 'show', :project_id => content.page.project, :id => content.page.title)
+          o << '<br/>'
+        }
+        o << '</div>'
+        return o.html_safe
+      end
     end
   end
 end
