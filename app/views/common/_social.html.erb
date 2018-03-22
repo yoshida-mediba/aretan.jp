@@ -1,3 +1,4 @@
+<% unless browser.bot? %>
 <script async src="https://connect.facebook.net/ja_JP/sdk.js#xfbml=1&autoLogAppEvents=1&version=v2.12&appId=1927655763976170" charset="utf-8"></script>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 <script async src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8"></script>
@@ -7,3 +8,4 @@
 <div class="social"><div class="fb-share-button" data-href="<%= url_for(:only_path => false) %>" data-layout="button_count" data-size="small" data-mobile-iframe="false"><a href="https://www.facebook.com/sharer/sharer.php?u=<%= CGI.escape url_for(:only_path => false) %>&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">シェア</a></div></div>
 <div class="social"><a href="https://twitter.com/share" class="twitter-share-button" data-show-count="false" data-text=" " data-related="aretan">Tweet</a></div>
 </div>
+<% end %>

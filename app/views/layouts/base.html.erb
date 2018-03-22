@@ -21,10 +21,10 @@
 <%= stylesheet_link_tag 'rtl', :media => 'all' if l(:direction) == 'rtl' %>
 <%= stylesheet_link_tag 'oembed/jquery.oembed.min.css' %>
 <%= javascript_heads %>
-<%= javascript_include_tag "oembed/jquery.oembed.min.js" %>
 <%= heads_for_theme %>
 <%= call_hook :view_layouts_base_html_head %>
-<script type="text/javascript">
+<%= javascript_include_tag "oembed/jquery.oembed.min.js" %>
+<script>
 $(document).ready(function(){
   $("a[href^='https://twitter.com/aretan/status/']").oembed(null,{
     embedMethod: 'fill',
@@ -34,6 +34,15 @@ $(document).ready(function(){
   });
 });
 </script>
+<% unless browser.bot? || User.current.admin? %>
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-38318122-1"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'UA-38318122-1');
+</script>
+<% end %>
 <%= yield :header_tags -%>
 </head>
 <body class="<%= body_css_classes %>">
