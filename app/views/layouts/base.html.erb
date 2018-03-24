@@ -23,7 +23,7 @@
 <%= javascript_heads %>
 <%= heads_for_theme %>
 <%= call_hook :view_layouts_base_html_head %>
-<%= javascript_include_tag "oembed/jquery.oembed.min.js", :async => true %>
+<%= javascript_include_tag "oembed/jquery.oembed.min.js" %>
 <script>
 $(document).ready(function(){
   $("a[href^='https://twitter.com/aretan/status/']").oembed(null,{
