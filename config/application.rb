@@ -57,6 +57,8 @@ module RedmineApp
     # Sets the Content-Length header on responses with fixed-length bodies
     config.middleware.insert_after Rack::Sendfile, Rack::ContentLength
 
+    config.middleware.use Rack::Deflater
+
     # Verify validity of user sessions
     config.redmine_verify_sessions = true
 
