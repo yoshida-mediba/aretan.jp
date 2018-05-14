@@ -42,7 +42,7 @@
     <hr />
 <% end %>
 
-<h2><%= @page.title %></h2>
+<h2><%= @page.pretty_title %></h2>
 
 <%= render(:partial => "wiki/content", :locals => {:content => @content}) %>
 
