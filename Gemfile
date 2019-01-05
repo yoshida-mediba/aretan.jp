@@ -4,7 +4,7 @@ if Gem::Version.new(Bundler::VERSION) < Gem::Version.new('1.5.0')
   abort "Redmine requires Bundler 1.5.0 or higher (you're using #{Bundler::VERSION}).\nPlease update with 'gem update bundler'."
 end
 
-gem "rails", "~> 4.2.7"
+gem "rails", "~> 4.2.11"
 gem "addressable", "2.4.0" if RUBY_VERSION < "2.0"
 gem "jquery-rails", "~> 4.0"
 gem "coderay", "~> 1.1.1"
@@ -29,7 +29,7 @@ gem "rails-html-sanitizer", ">= 1.0.3"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :x64_mingw, :mswin, :jruby]
-gem "rbpdf", "~> 1.19.3"
+gem "rbpdf", "~> 1.19.6"
 
 # Optional gem for LDAP authentication
 group :ldap do
