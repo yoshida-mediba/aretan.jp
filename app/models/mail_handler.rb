@@ -54,7 +54,7 @@ class MailHandler < ActionMailer::Base
   def self.safe_receive(*args)
     receive(*args)
   rescue Exception => e
-    logger.error "MailHandler: an unexpected error occurred when receiving email: #{e.message}" if logger
+    Rails.logger.error "MailHandler: an unexpected error occurred when receiving email: #{e.message}"
     return false
   end
 
@@ -93,7 +93,7 @@ class MailHandler < ActionMailer::Base
     # Ignore emails received from the application emission address to avoid hell cycles
     if sender_email.casecmp(Setting.mail_from.to_s.strip) == 0
       if logger
-        logger.info  "MailHandler: ignoring email from Redmine emission address [#{sender_email}]"
+        logger.info  "MailHandler: ignoring email from Redmine emission address [#{email.from.first}]"
       end
       return false
     end
